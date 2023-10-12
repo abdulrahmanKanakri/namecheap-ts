@@ -1,0 +1,40 @@
+{
+  "name": "namecheap-ts",
+  "version": "1.0.0",
+  "description": "A simple wrapper for namecheap API",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsc --build && node dist/index.js",
+    "build": "tsup",
+    "test": "jest"
+  },
+  "keywords": [
+    "namecheap",
+    "nodejs",
+    "typescript",
+    "domain registrar"
+  ],
+  "author": "Abdulrahman Kanakri",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.1",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/xml2js": "^0.4.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdulrahmanKanakri/namecheap-ts.git"
+  }
+}
