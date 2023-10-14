@@ -1,6 +1,6 @@
 {
   "name": "namecheap-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple wrapper for namecheap API",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

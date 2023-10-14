@@ -18,12 +18,11 @@ describe("Namecheap", () => {
     expect(instance).toBeDefined();
   });
 
-  it("should return domain is not available", async () => {
-    const payload = { DomainList: "mezoishere.net" };
-    const { data } = await instance.call("namecheap.domains.check", payload);
-    const isAvailabe: string = data[0].DomainCheckResult[0].$.Available;
+  it("should return domain is not available and is not a premium", async () => {
+    const { availabe, premium } = await instance.checkDomain("mezoishere.net");
 
-    expect(isAvailabe).toBe("false");
+    expect(availabe).toBe(false);
+    expect(premium).toBe(false);
   });
 
   it("should return domain is available", async () => {
@@ -32,5 +31,20 @@ describe("Namecheap", () => {
     const isAvailabe: string = data[0].DomainCheckResult[0].$.Available;
 
     expect(isAvailabe).toBe("true");
+  });
+
+  it("should return the pricing for domain registeration", async () => {
+    const { data } = await instance.getDomainPrice(
+      "mezoishere.com",
+      "REGISTER"
+    );
+
+    expect(data).toBeDefined();
+  });
+
+  it("should return the empty pricing for domain renew", async () => {
+    const { data } = await instance.getDomainPrice("mezoishere.zed", "RENEW");
+
+    expect(data).toBeUndefined();
   });
 });

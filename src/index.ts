@@ -1,1 +1,2 @@
-export { default, INamecheapConfig, ICallReponse } from "./namecheap";
+export * from "./namecheap";
+export { default } from "./namecheap";
