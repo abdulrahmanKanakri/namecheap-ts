@@ -1,6 +1,6 @@
 {
   "name": "namecheap-ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple wrapper for namecheap API",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "start": "tsc --build && node dist/index.js",
-    "build": "tsup",
+    "build": "rm -rf dist && tsup",
     "release": "rm -rf dist && tsup && npm publish",
     "test": "jest"
   },

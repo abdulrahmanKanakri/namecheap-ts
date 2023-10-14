@@ -17,10 +17,10 @@ You can use the package to perform various operations such as domain registratio
 ```typescript
 import Namecheap, { INamecheapConfig } from "namecheap-ts";
 const config: INamecheapConfig = {
-  ApiKey: "api-key",
-  ApiUser: "api-user",
-  UserName: "user-name",
-  ClientIp: "client-ip",
+  apiKey: "api-key",
+  apiUser: "api-user",
+  username: "user-name",
+  clientIp: "client-ip",
 };
 
 const api = new Namecheap(config, true);
@@ -28,7 +28,7 @@ const api = new Namecheap(config, true);
 const payload = { DomainList: "mezoishere.net" };
 const { data } = await api.call("namecheap.domains.check", payload);
 
-const isAvailabe = data[0].DomainCheckResult[0].$.Available;
+const isAvailabe = data.DomainCheckResult.$.Available;
 console.log(isAvailable);
 ```
 
@@ -44,7 +44,7 @@ Create a new instance of the `Namecheap` class.
 const namecheap = new Namecheap(config, true);
 ```
 
-#### `call(command: Command, payload: Record<string, string>): Promise<IReponse>`
+#### `call(command: Command, payload: Payload): Promise<IReponse>`
 
 Call a command on the Namecheap API.
 
@@ -62,14 +62,14 @@ console.log(response);
 Check if a domain is available and if it'is premium.
 
 ```typescript
-const { availabe, premium } = await namecheap.checkDomain("example.com");
+const { data } = await namecheap.checkDomain("example.com");
 
-console.log({ availabe, premium });
+console.log({ availabe: data.availabe, premium: data.premium });
 ```
 
 #### `getDomainPrice(domainName: string, action: DomainPriceAction): Promise<IReponse>`
 
-Get the price of a domain.
+Get the prices list of a domain.
 
 ```typescript
 import { DomainPriceAction } from "namecheap-ts";
@@ -77,6 +77,51 @@ const response = await namecheap.getDomainPrice(
   "example.com",
   DomainPriceAction.REGISTER
 );
+
+console.log(response);
+```
+
+#### `registerDomain(payload: Payload): Promise<IRegisterDomainResponse>`
+
+Register domain in namecheap.
+
+```typescript
+const payload = {
+  DomainName: "mezoishere.co",
+  Years: 2,
+  // ...etc other attributes
+};
+
+const response = await namecheap.registerDomain(payload);
+
+console.log(response);
+```
+
+#### `addFundsRequest(payload: AddFundsRequestPayload): Promise<IAddFundsRequestResponse>`
+
+Add funds to the user account.
+
+```typescript
+const payload = {
+  username: "username",
+  paymentType: "creditcard",
+  amount: 10,
+  returnURL: "the return url after payment is done",
+};
+
+const response = await namecheap.addFundsRequest(payload);
+
+console.log(response);
+```
+
+#### `getFundsStatus(tokenId: string): Promise<IGetFundsStatusResponse>`
+
+Check the status of a specific funds request.
+
+```typescript
+const tokenId = "the-token-id-of-the-created-funds-request"
+
+const response = await namecheap.getFundsStatus(tokentId);
 
 console.log(response);
 ```
