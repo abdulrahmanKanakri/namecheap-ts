@@ -5,10 +5,14 @@ describe("Namecheap", () => {
 
   beforeEach(() => {
     const config: INamecheapConfig = {
-      ApiKey: "some-api-key",
-      ApiUser: "api-user",
-      ClientIp: "192.168.1.1",
-      UserName: "user-name",
+      // apiKey: "some-api-key",
+      // apiUser: "api-user",
+      // clientIp: "192.168.1.1",
+      // username: "user-name",
+      apiKey: "d915adb9b0ac405398def53be001110e",
+      apiUser: "Kanakri",
+      username: "Kanakri",
+      clientIp: "5.155.10.166",
     };
 
     instance = new Namecheap(config, true);
@@ -19,18 +23,18 @@ describe("Namecheap", () => {
   });
 
   it("should return domain is not available and is not a premium", async () => {
-    const { availabe, premium } = await instance.checkDomain("mezoishere.net");
+    const { data } = await instance.checkDomain("mezoishere.net");
 
-    expect(availabe).toBe(false);
-    expect(premium).toBe(false);
+    expect(data.availabe).toBe(false);
+    expect(data.premium).toBe(false);
   });
 
   it("should return domain is available", async () => {
     const payload = { DomainList: "mezoishere.com" };
     const { data } = await instance.call("namecheap.domains.check", payload);
-    const isAvailabe: string = data[0].DomainCheckResult[0].$.Available;
+    const isAvailabe: string = data.DomainCheckResult.$.Available;
 
-    expect(isAvailabe).toBe("true");
+    expect(isAvailabe).toBe(true);
   });
 
   it("should return the pricing for domain registeration", async () => {
@@ -39,12 +43,14 @@ describe("Namecheap", () => {
       "REGISTER"
     );
 
-    expect(data).toBeDefined();
+    expect(data).toBeInstanceOf(Array);
+    expect(data).not.toHaveLength(0);
   });
 
   it("should return the empty pricing for domain renew", async () => {
     const { data } = await instance.getDomainPrice("mezoishere.zed", "RENEW");
 
-    expect(data).toBeUndefined();
+    expect(data).toBeInstanceOf(Array);
+    expect(data).toHaveLength(0);
   });
 });

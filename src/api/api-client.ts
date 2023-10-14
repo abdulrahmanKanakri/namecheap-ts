@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { parseStringPromise } from "xml2js";
 import { ResponseError, XMLParsingError } from "./errors";
+import { parseXMLString } from "./utils";
 
 class APIClient {
   private readonly _client: AxiosInstance;
@@ -13,14 +13,18 @@ class APIClient {
     return await this._client.get(url);
   }
 
+  async post(url: string) {
+    return await this._client.post(url);
+  }
+
   private async onResponse(response: AxiosResponse): Promise<AxiosResponse> {
     try {
-      const result = await parseStringPromise(response.data);
+      const result = await parseXMLString(response.data);
 
       if (result.ApiResponse.$.Status === "ERROR") {
         const responseErrors = result.ApiResponse.Errors;
-        const code = responseErrors[0].Error[0].$.Number;
-        const message = responseErrors[0].Error[0]._;
+        const code = responseErrors.Error.$.Number;
+        const message = responseErrors.Error._;
 
         throw new ResponseError(message, code);
       }
