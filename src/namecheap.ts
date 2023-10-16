@@ -77,10 +77,14 @@ class Namecheap {
       ProductName: tld,
     });
 
-    const pricing: object[] = (
-      data.UserGetPricingResult?.ProductType?.ProductCategory?.Product?.Price ||
-      []
-    ).map((price: any) => ({ ...price.$ }));
+    const price =
+      data.UserGetPricingResult?.ProductType?.ProductCategory?.Product?.Price;
+
+    if (!price) {
+      throw new InvalidDomainNameException(domainName);
+    }
+
+    const pricing: object[] = price.map((price: any) => ({ ...price.$ }));
 
     return { data: pricing, status };
   }
