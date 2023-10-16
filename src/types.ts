@@ -43,7 +43,7 @@ export enum DomainPriceActions {
 export type DomainPriceAction = `${DomainPriceActions}`;
 
 export type AddFundsRequestPayload = {
-  username: string;
+  username?: string;
   paymentType: "creditcard";
   amount: number;
   returnURL: string;
